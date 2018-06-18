@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
+import './reset.css';
 import './App.css';
-import Auth from './component/Auth';
-import Dashboard from './component/Dashboard';
-import Form from './component/Form';
-import Nav from './component/Nav';
-import Post from './component/Post';
+import routes from './routes';
+
+// "https://robohash.org/JaredTanner?set=set4"
 
 class App extends Component {
+
   render() {
+
     return (
       <div className="App">
-        <Auth />
-        <Dashboard />
-        <Form />
-        <Nav />
-        <Post />
+        { routes }
       </div>
     );
   }

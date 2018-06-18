@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 
 export default class Form extends Component {
-  constructor(props){
-    super(props);
-  }
 
   render(){
 
     return (
-      <div className="form">
-        Form
+      <div className="form right-of-nav">
+        <h2>Form</h2>
       </div>
     )
   }

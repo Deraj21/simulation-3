@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 
 export default class Post extends Component {
-  constructor(props){
-    super(props);
-  }
 
   render(){
+    const { postid } = this.props.match.params;
 
     return (
-      <div className="post">
-        Post
+      <div className="post right-of-nav">
+        <h2>Post {postid}</h2>
       </div>
     )
   }
