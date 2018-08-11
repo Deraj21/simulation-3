@@ -13,29 +13,3 @@ body {
   height: 100vh;
   width: 80vw;
 }
-
-.nav {
-  display: inline-block;
-  vertical-align: top;
-  background-color: pink;
-  height: 100vh;
-  width: 10vw;
-}
-
-.nav .logo {
-  height: 70px;
-  width: 70px;
-  background-size: contain;
-}
-
-.home-logo {
-  background-image: url('./images/home_logo.png');
-}
-
-.new-logo {
-  background-image: url('./images/new_logo.png');
-}
-
-.shut-down {
-  background-image: url('./images/shut_down.png');
-}

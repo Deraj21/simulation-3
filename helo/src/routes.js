@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Auth from './component/Auth';
-import Dashboard from './component/Dashboard';
-import Post from './component/Post';
-import Form from './component/Form';
-import Nav from './component/Nav';
+import Auth from './component/Auth/Auth';
+import Dashboard from './component/Dashboard/Dashboard';
+import Post from './component/Post/Post';
+import Form from './component/Form/Form';
+import Nav from './component/Nav/Nav';
 
 export default (
   <div>
