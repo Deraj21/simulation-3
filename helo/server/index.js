@@ -17,9 +17,16 @@ massive(CONNECTION_STRING)
     console.log(`dbErr: ${err.message}`);
   } );
 
-// endpoints
+// auth
 app.post('/api/auth/register', controller.createUser);
 app.post('/api/auth/login', controller.loginUser);
+
+// posts
+app.get('/api/post/:id', controller.getPost);
+app.get('/api/posts', controller.getPosts);
+app.post('/api/post', controller.createPost);
+app.put('/api/post/:id', controller.editPost);
+app.delete('/api/post/:id', controller.deletePost);
 
 const port = PORT || 4000;
 app.listen(port, console.log(`Server listening on port ${port}`));
