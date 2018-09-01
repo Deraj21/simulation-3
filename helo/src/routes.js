@@ -7,7 +7,7 @@ import Form from './component/Form/Form';
 import Nav from './component/Nav/Nav';
 
 export default (
-  <div>
+  <div className="routes-container">
     <Route path="/" component={Nav} />
     <Route exact path="/" component={Auth}/>
     <Route path="/dashboard" component={Dashboard}/>

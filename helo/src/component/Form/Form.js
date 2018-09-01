@@ -6,7 +6,24 @@ export default class Form extends Component {
 
     return (
       <div className="form right-of-nav">
-        <h2>Form</h2>
+        <h1>NEW POST</h1>
+        
+        <div className="middle">
+          <p>Title:</p>
+          <input type="text" />
+          
+          <div className="input-img" />
+          
+          <p>Image URL:</p>
+          <input type="text" />
+          
+          <p>Content:</p>
+          <textarea />
+        </div>
+
+        <div className="btn-box">
+          <button>Post</button>
+        </div>
       </div>
     )
   }
