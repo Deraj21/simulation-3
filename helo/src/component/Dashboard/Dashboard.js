@@ -12,7 +12,7 @@ class Dashboard extends Component {
       postsData: [],
       searchTerm: '',
       filterBySearch: false,
-      filterByUser: false
+      filterByUser: true
     }
 
     this.getPosts = this.getPosts.bind(this);
@@ -25,7 +25,6 @@ class Dashboard extends Component {
   getPosts(){
     Axios.get('/api/posts')
       .then(response => {
-        console.log(response.data);
         this.setState({ postsData: response.data});
       })
       .catch(err => console.log(err.message));
@@ -63,7 +62,7 @@ class Dashboard extends Component {
       postsData = postsData.filter(post => post.title.includes(searchTerm));
     }
     if (filterByUser){
-      postsData = postsData.filter(post => post.username === username);
+      postsData = postsData.filter(post => post.username !== username);
     }
 
     let posts = postsData.map((post, i) => (

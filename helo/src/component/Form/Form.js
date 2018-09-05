@@ -7,8 +7,11 @@ import { updateTitle, updateURL, updateContent } from '../../ducks/reducer';
 class Form extends Component {
 
   post(){
+
     let { title, url, content, id } = this.props;
-    console.log({ title, url, content, id });
+    if (!id){
+      alert('Please login before posting');
+    }
     Axios.post('/api/post', { title, img: url, content, author_id: id })
       .then(() => console.log('posted'))
       .catch(err => err.message);

@@ -6,6 +6,10 @@ const controller = require('./controller');
 
 const { PORT, CONNECTION_STRING, secret } = process.env;
 
+// 3. TO ADD: 
+  // sessions
+  // user can logout
+
 const app = express();
 app.use(bodyParser.json());
 
