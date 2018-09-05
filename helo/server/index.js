@@ -8,6 +8,7 @@ const { PORT, CONNECTION_STRING, secret } = process.env;
 
 const app = express();
 app.use(bodyParser.json());
+
 massive(CONNECTION_STRING)
   .then( db => {
     app.set('db', db);

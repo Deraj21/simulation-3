@@ -1,0 +1,23 @@
+.post {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  max-width: 800px;
+}
+
+p {
+  margin-left: 20px;
+}
+
+.upper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lower {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}

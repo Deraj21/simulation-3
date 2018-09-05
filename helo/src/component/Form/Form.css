@@ -36,9 +36,7 @@ textarea {
 }
 
 .input-img {
-  background-image: url('https://via.placeholder.com/400x250');
   background-size: fill;
-  background-repeat: no-repeat;
   height: 250px;
   width: 50%;
   margin: auto;

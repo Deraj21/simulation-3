@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 function Nav(props) {
 
-  console.log(props);
+  // console.log(props);
 
   if (props.location.pathname !== "/") {
     return (

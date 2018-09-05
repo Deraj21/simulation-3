@@ -31,10 +31,10 @@ class Auth extends Component {
     let { username, password } = this.state;
     switch(key){
       case 'login':
-        Axios.post('/api/auth/register', { username, password })
+        Axios.post('/api/auth/login', { username, password })
           .then( response => {
-            let { id, username, profile_pic } = response.data;
-            this.props.updateUser(id, username, profile_pic);
+            let { user_id, username, profile_pic } = response.data;
+            this.props.updateUser(user_id, username, profile_pic);
             console.log(response.data);
           })
           .catch( err => {
@@ -44,8 +44,8 @@ class Auth extends Component {
       case 'register':
         Axios.post('/api/auth/register', { username, password })
           .then( response => {
-            let { id, username, profile_pic } = response.data;
-            this.props.updateUser(id, username, profile_pic);
+            let { user_id, username, profile_pic } = response.data;
+            this.props.updateUser(user_id, username, profile_pic);
           } )
           .catch( err => {
             console.log(err.message);

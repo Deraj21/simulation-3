@@ -7,7 +7,7 @@ module.exports = {
         res.status(200).send(response[0]);
       });
   },
-  loginUser: (req, rea, next) => {
+  loginUser: (req, res, next) => {
     let { username, password } = req.body;
     const db = req.app.get('db');
     db.login_user([username, password])

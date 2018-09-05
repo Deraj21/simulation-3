@@ -1,42 +1,37 @@
 import React, { Component } from 'react';
+import Axios from 'axios';
+import { Link } from 'react-router-dom';
 import './Dashboard.css';
 
-const POSTS_DATA = [
-  {
-    user_id: 1,
-    user_name: 'test1',
-    post_title: 'Ducks',
-    post_text: '',
-    post_image_url: ''
-  },
-  {
-    user_id: 2,
-    user_name: 'be_the_bert',
-    post_title: 'Testing',
-    post_text: '',
-    post_image_url: ''
-  },
-  {
-    user_id: 1,
-    user_name: 'test1',
-    post_title: 'Games',
-    post_text: 'Games are cool',
-    image_url: 'http://bdfjade.com/data/out/121/6242464-imagens-de-games.png'
-  }
-];
-
 export default class Dashboard extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      postsData: []
+    }
+  }
+
+  componentDidMount(){
+    Axios.get('/api/posts')
+      .then(response => {
+        console.log(response.data);
+        this.setState({ postsData: response.data});
+      })
+      .catch(err => console.log(err.message));
+  }
 
   render(){
+    let { postsData } = this.state;
 
-    let posts = POSTS_DATA.map(post => (
-      <div className="post">
-        <h2>{post.post_title}</h2>
+    let posts = postsData.map((post, i) => (
+      <Link to={`/post/${post.post_id}`}><div className="mini-post" key={i}>
+        <h2>{post.title}</h2>
         <div className="profile-box">
-          <span>by {post.user_name}</span>
-          <img src={`https://robohash.org/${post.user_name}`}/>
+          <span>by {post.username}</span>
+          <img src={`https://robohash.org/${post.username}`} alt="author_pic"/>
         </div>
-      </div>
+      </div></Link>
     ))
 
     return (
@@ -46,7 +41,7 @@ export default class Dashboard extends Component {
 
           <div className="search-bar">
             <input type="text" placeholder="Search by Title" />
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11QULzZDQtTl7erLYkx-P8B6MQ7IvDv5somwpCG6SPBfpCdKo" />
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11QULzZDQtTl7erLYkx-P8B6MQ7IvDv5somwpCG6SPBfpCdKo" alt="search_icon"/>
             <button>Reset</button>
           </div>
 
