@@ -2,17 +2,27 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
+import { connect } from 'react-redux';
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
   constructor(props){
     super(props);
 
     this.state = {
-      postsData: []
+      postsData: [],
+      searchTerm: '',
+      filterBySearch: false,
+      filterByUser: false
     }
+
+    this.getPosts = this.getPosts.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.resetSearch = this.resetSearch.bind(this);
+    this.search = this.search.bind(this);
+    this.handleCheckChange = this.handleCheckChange.bind(this);
   }
 
-  componentDidMount(){
+  getPosts(){
     Axios.get('/api/posts')
       .then(response => {
         console.log(response.data);
@@ -21,8 +31,40 @@ export default class Dashboard extends Component {
       .catch(err => console.log(err.message));
   }
 
+  componentDidMount(){
+    this.getPosts();
+  }
+
+  handleChange(e){
+    this.setState({ searchTerm: e.target.value });
+  }
+
+  handleCheckChange(e){
+    let temp = true;
+    if (this.state.filterByUser){
+      temp = false;
+    }
+    this.setState({ filterByUser: temp });
+  }
+
+  resetSearch(){
+    this.getPosts();
+    this.setState({ searchTerm: '', filterBySearch: false });
+  }
+
+  search(){
+    this.setState({ filterBySearch: true });
+  }
+
   render(){
-    let { postsData } = this.state;
+    let { postsData, searchTerm, filterBySearch, filterByUser } = this.state;
+    let { username } = this.props;
+    if (filterBySearch){
+      postsData = postsData.filter(post => post.title.includes(searchTerm));
+    }
+    if (filterByUser){
+      postsData = postsData.filter(post => post.username === username);
+    }
 
     let posts = postsData.map((post, i) => (
       <Link to={`/post/${post.post_id}`}><div className="mini-post" key={i}>
@@ -40,14 +82,14 @@ export default class Dashboard extends Component {
         <div className="search-box box">
 
           <div className="search-bar">
-            <input type="text" placeholder="Search by Title" />
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11QULzZDQtTl7erLYkx-P8B6MQ7IvDv5somwpCG6SPBfpCdKo" alt="search_icon"/>
-            <button>Reset</button>
+            <input type="text" placeholder="Search by Title" value={searchTerm} onChange={e => this.handleChange(e)} />
+            <img onClick={() => this.search() } src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11QULzZDQtTl7erLYkx-P8B6MQ7IvDv5somwpCG6SPBfpCdKo" alt="search_icon"/>
+            <button onClick={() => this.resetSearch() }>Reset</button>
           </div>
 
           <div className="check-box">
             <p>My Posts</p>
-              <input className="chck" type="checkbox"/>
+              <input onChange={e => this.handleCheckChange(e)} className="chck" type="checkbox"/>
           </div>
         </div>
 
@@ -58,3 +100,12 @@ export default class Dashboard extends Component {
     )
   }
 }
+
+function mapStateToProps(state){
+  let { username } = state;
+  return {
+    username
+  }
+}
+
+export default connect(mapStateToProps)(Dashboard);

@@ -4,7 +4,7 @@ let initialState = {
   profile_pic: '',
   title: '',
   url: '',
-  content: ''
+  content: '',
 };
 
 const UPDATE_USER = "UPDATE_USER",
