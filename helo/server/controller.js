@@ -2,10 +2,12 @@ module.exports = {
   createUser: (req, res, next) => {
     let { username, password } = req.body;
     const db = req.app.get('db');
-    db.create_user([username, password, `https://robohash.org/${username}`])
-      .then(response => {
-        res.status(200).send(response[0]);
-      });
+    db.create_user([username, password, `https://robohash.org/${username}?set=set4`])
+    .then(response => {
+      req.session.user_id = response[0].user_id;
+      req.session.username = response[0].username;
+      res.status(200).send(response[0]);
+    });
   },
   loginUser: (req, res, next) => {
     let { username, password } = req.body;
@@ -13,11 +15,19 @@ module.exports = {
     db.login_user([username, password])
       .then(response => {
         if (response){
+          req.session.user_id = response[0].user_id;
+          req.session.username = response[0].username;
           res.status(200).send(response[0]);
         } else {
           res.status(404).send();
         }
       });
+  },
+  logoutUser: (req, res) => {
+    let { username, user_id } = req.session;
+    console.log(username + ' logged out');
+    res.status(200).send(`${username} logged out`);
+    req.session.destroy();
   },
   getPost: (req, res) => {
     let { id } = req.params;
@@ -33,10 +43,12 @@ module.exports = {
       .catch(err => console.log(err.message));
   },
   createPost: (req, res) => {
-    let { title, img, content, author_id } = req.body;
+    let { title, img, content } = req.body;
+    let { user_id } = req.session;
+    console.log(user_id);
     const db = req.app.get('db');
-    db.create_post([title, img, content, author_id])
-      .then(response => res.status(200).send())
+    db.create_post([title, img, content, user_id])
+      .then(response => res.status(200).send(response))
       .catch(err => console.log(err.message));
   },
   editPost: (req, res) => {

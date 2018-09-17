@@ -3,16 +3,15 @@ import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
 import { connect } from 'react-redux';
+import { updateDisplayUserPosts, updatePosts } from '../../ducks/reducer';
 
 class Dashboard extends Component {
   constructor(props){
     super(props);
 
     this.state = {
-      postsData: [],
       searchTerm: '',
-      filterBySearch: false,
-      filterByUser: true
+      filterBySearch: false
     }
 
     this.getPosts = this.getPosts.bind(this);
@@ -25,7 +24,7 @@ class Dashboard extends Component {
   getPosts(){
     Axios.get('/api/posts')
       .then(response => {
-        this.setState({ postsData: response.data});
+        this.props.updatePosts(response.data);
       })
       .catch(err => console.log(err.message));
   }
@@ -40,10 +39,10 @@ class Dashboard extends Component {
 
   handleCheckChange(e){
     let temp = true;
-    if (this.state.filterByUser){
+    if (this.props.displayUserPosts){
       temp = false;
     }
-    this.setState({ filterByUser: temp });
+    this.props.updateDisplayUserPosts(temp);
   }
 
   resetSearch(){
@@ -56,16 +55,16 @@ class Dashboard extends Component {
   }
 
   render(){
-    let { postsData, searchTerm, filterBySearch, filterByUser } = this.state;
-    let { username } = this.props;
+    let { searchTerm, filterBySearch } = this.state;
+    let { username, displayUserPosts, posts } = this.props;
     if (filterBySearch){
-      postsData = postsData.filter(post => post.title.includes(searchTerm));
+      posts = posts.filter(post => post.title.includes(searchTerm));
     }
-    if (filterByUser){
-      postsData = postsData.filter(post => post.username !== username);
+    if (!displayUserPosts){
+      posts = posts.filter(post => post.username !== username);
     }
 
-    let posts = postsData.map((post, i) => (
+    let postComponents = posts.map((post, i) => (
       <Link to={`/post/${post.post_id}`}><div className="mini-post" key={i}>
         <h2>{post.title}</h2>
         <div className="profile-box">
@@ -93,7 +92,7 @@ class Dashboard extends Component {
         </div>
 
         <div className="posts-box box">
-          { posts }
+          { postComponents }
         </div>
       </div>
     )
@@ -101,10 +100,12 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps(state){
-  let { username } = state;
+  let { username , displayUserPosts, posts } = state;
   return {
-    username
+    username,
+    displayUserPosts,
+    posts
   }
 }
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps, { updateDisplayUserPosts, updatePosts })(Dashboard);

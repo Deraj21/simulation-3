@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { updateTitle, updateURL, updateContent } from '../../ducks/reducer';
+import { updateTitle, updateURL, updateContent, updatePosts } from '../../ducks/reducer';
 
 class Form extends Component {
 
   post(){
 
-    let { title, url, content, id } = this.props;
-    if (!id){
-      alert('Please login before posting');
-    }
-    Axios.post('/api/post', { title, img: url, content, author_id: id })
-      .then(() => console.log('posted'))
+    let { title, url, content } = this.props;
+    // if (!id){
+    //   alert('Please login before posting');
+    // }
+    Axios.post('/api/post', { title, img: url, content })
+      .then(response => this.props.updatePosts(response.data) )
       .catch(err => err.message);
   }
 
@@ -61,4 +61,4 @@ function mapStateToProps(state){
   };
 }
 
-export default connect(mapStateToProps, { updateTitle, updateURL, updateContent })(Form);
+export default connect(mapStateToProps, { updateTitle, updateURL, updateContent, updatePosts })(Form);

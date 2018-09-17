@@ -1,28 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Axios from 'axios';
 
-function Nav(props) {
+class Nav extends Component {
 
-  // console.log(props);
-
-  if (props.location.pathname !== "/") {
-    return (
-      <div className="nav"><div className="flex-container">
-        <div className="profile logo">
-          <img src={props.profile_pic} alt="profile-pic"/>
-          <p>{props.username}</p>
-        </div>
-        <Link to="/dashboard"><div className="home-logo logo"></div></Link>
-        <Link to="/new"><div className="new-logo logo"></div></Link>
-        <Link to="/"><div className="shut-down logo"></div></Link>
-      </div></div>
-    );
+  logout(){
+    Axios.post('/api/auth/logout')
+      .then(response => console.log(response.data))
+      .catch(err => console.log(err.message));
   }
-  else {
-    return (
-      false
-    );
+
+  render() {
+    let { location, username, profile_pic } = this.props;
+    if (location.pathname !== "/") {
+      return (
+        <div className="nav"><div className="flex-container">
+          <div className="profile logo">
+            <img src={profile_pic} alt="profile"/>
+            <p>{username}</p>
+          </div>
+          <Link to="/dashboard"><div className="home-logo logo"></div></Link>
+          <Link to="/new"><div className="new-logo logo"></div></Link>
+          <Link onClick={() => this.logout()} to="/"><div className="shut-down logo"></div></Link>
+        </div></div>
+      );
+    }
+    else {
+      return (
+        false
+      );
+    }
   }
 }
 
