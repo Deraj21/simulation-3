@@ -8,17 +8,12 @@ const session = require('express-session');
 const { PORT, CONNECTION_STRING, SECRET } = process.env;
   
   const app = express();
-  app.use(bodyParser.json());
   app.use( session({
     secret: SECRET,
-    cookie: {
-      user_id: null,
-      username: ''
-    },
     resave: false,
-    saveUninitialized: true,
-    expires: 2592000000
+    saveUninitialized: true
   }) );
+  app.use(bodyParser.json());
 
 massive(CONNECTION_STRING)
   .then( db => {
@@ -33,6 +28,9 @@ massive(CONNECTION_STRING)
 app.post('/api/auth/register', controller.createUser);
 app.post('/api/auth/login', controller.loginUser);
 app.post('/api/auth/logout', controller.logoutUser);
+
+// user
+app.get('/api/currentUser', controller.getCurrentUser);
 
 // posts
 app.get('/api/post/:id', controller.getPost);

@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { updateUser } from '../../ducks/reducer';
 import Axios from 'axios';
 
 class Nav extends Component {
+  
+  componentDidMount(){
+    Axios.get('/api/currentUser')
+      .then( response => {
+        let { username, user_id, profile_pic } = response.data;
+        console.log({username, user_id, profile_pic});
+        this.props.updateUser(user_id, username, profile_pic);
+      })
+      .catch( err => console.log(err.message));
+  }
 
   logout(){
     Axios.post('/api/auth/logout')
@@ -39,4 +50,4 @@ function mapStateToProps(state){
   return { username, profile_pic };
 }
 
-export default connect(mapStateToProps)(Nav);
+export default connect(mapStateToProps, { updateUser })(Nav);
